@@ -88,3 +88,17 @@
     (cond
       ((zero? n) (cdr l))
       (else (cons (car l) (rempick (sub1 n) (cdr l)))))))
+
+(define no-nums
+  (lambda (l)
+    (cond
+      ((null? l) '())
+      ((number? (car l)) (cons (car l) (no-nums (cdr l))))
+      (else (no-nums (cdr l))))))
+
+(define occur
+  (lambda (elem l)
+    (cond
+      ((null? l) 0)
+      ((eq? (car l) elem) (add1 (occur elem (cdr l))))
+      (else (occur elem (cdr l))))))
