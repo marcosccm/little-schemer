@@ -22,15 +22,27 @@
   (lambda (aexp)
     (cond
       ((atom? aexp) aexp)
-      ((eq? (car aexp) '+)
+      ((eq? (operator aexp) '+)
        (add
          (value2 (car (cdr aexp)))
          (value2 (car (cdr (cdr aexp))))))
-      ((eq? (car aexp) 'x)
+      ((eq? (operator aexp) 'x)
        (add
          (value2 (car (cdr aexp)))
          (value2 (car (cdr (cdr aexp))))))
       (else 
        (expo
-         (value2 (car (cdr aexp)))
-         (value2 (car (cdr (cdr aexp)))))))))
+         (value2 (fst-sub-exp aexp))
+         (value2 (snd-sub-exp aexp)))))))
+
+(define fst-sub-exp
+  (lambda (aexp)
+    (car (cdr (aexp)))))
+
+(define snd-sub-exp
+  (lambda (aexp)
+    (car (cdr (cdr (aexp))))))
+
+(define operator
+  (lambda (aexp)
+    (car aexp)))
