@@ -53,3 +53,37 @@
     (cond
       ((null? (car lset)) (cdr lset))
       (else (intersect (car lset) (intersectall (cdr lset)))))))
+
+(define a-pair?
+  (lambda (x)
+    (cond
+      ((null? x) #f)
+      ((atom? x) #f)
+      ((null? (cdr x)) #f)
+      ((null? (cdr (cdr x))) #t)
+      (else #f))))
+
+(define first
+  (lambda (p)
+    (car p)))
+
+(define second
+  (lambda (p)
+    (car (cdr p))))
+
+(define build
+  (lambda (s1 s2)
+    (cons s1 (cons s2 '()))))
+
+(define fun?
+  (lambda (rel)
+    (set? (firsts rel))))
+
+(define revrel
+  (lambda (rel)
+    (cond
+      ((null? rel) '())
+      (else (cons (build
+                    (first (car rel))
+                    (second (car rel)))
+                  (revrel (cdr rel)))))))
