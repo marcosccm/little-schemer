@@ -74,6 +74,15 @@
       (else (cons (car lat)
                   (multirember a (cdr lat)))))))
 
+(define multirember-f
+  (lambda (test?)
+    (lambda (a lat)
+      (cond
+        ((null? lat) '())
+        ((test? (car lat) a) ((multirember-f test?) a (cdr lat)))
+        (else (cons (car lat)
+                    ((multirember-f test?) a (cdr lat))))))))
+
 (define even?
   (lambda (x)
     (eq (mult (div x 2) 2) x)))
