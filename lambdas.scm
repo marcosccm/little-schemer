@@ -148,7 +148,6 @@
           (lambda (newllat l r)
             (cons (car lat) newlat) l r))))))
 
-
 (define even?
   (lambda (x)
     (eq (mult (div x 2) 2) x)))
@@ -163,3 +162,25 @@
          (else evens-only* (cdr l))))
       (else (cons (evens-only* (car l))
                   (evens-only* (cdr l)))))))
+
+(define evens-only*-co
+  (lambda (lat col)
+    (cond
+      ((null? lat)
+       (col '() 1 0))
+      ((atom? (car lat))
+       (cond
+         ((even? (car lat))
+          (evens-only*-co (cdr lat)
+            (lambda (newlat evens odd)
+              (col (cons (car lat) newlat) (mult evens (car lat)) odd))))
+          (else
+            (evens-only*-co (cdr lat)
+              (lambda (newlat evens odd)
+                (col newlat evens (add (car lat) odd)))))))
+      (else (evens-only*-co (car lat)
+              (lambda (al ap as)
+                (evens-only*-co (cdr lat)
+                  (lambda (dl dp ds)
+                    (col (cons al ap) (mult ap dp) (add as ds))))))))))
+
